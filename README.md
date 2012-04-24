@@ -71,48 +71,58 @@ What's the minimum that I need for a lisp?
 
 I need some way to create variables, set variables, and functions
 
-    (var var-name initial-value) ; introduce and initialize a variable
-    (set var-name new-value)     ; set variable to a new value
-    (def function-name (arg-list) body) ; function definition
-    (function-name [args ...]) ; application
-    (lambda arg-list body)     ; anonymous function
+```lisp
+(var var-name initial-value) ; introduce and initialize a variable
+(set var-name new-value)     ; set variable to a new value
+(def function-name (arg-list) body) ; function definition
+(function-name [args ...]) ; application
+(lambda arg-list body)     ; anonymous function
+```
 
 Also, some way to loop and branch is important:
 
-    (if condition then-branch else-branch)     ; if-then-else
-    (for initialize condition after-loop body) ; for loop
+```lisp
+(if condition then-branch else-branch)     ; if-then-else
+(for initialize condition after-loop body) ; for loop
+```
     
 And, of course, some built in way to do IO:
 
-    (read filename-or-stdin)
-    (write filename-or-stdout string-to-write)
+```lisp
+(read filename-or-stdin)
+(write filename-or-stdout string-to-write)
+```
     
 Also, we need some simple arithmetic and boolean operators as well as string
 operators:
  
-    (3,000,000)     ; integer (commas are legal and ignored)
-    (true)  ; boolean
-    (false) ; boolean
-    ('a')   ; character
-    ("a string") ; short for ('a' ' ' 's' 't' 'r' 'i' 'n' 'g')
-    ('quoted) ; quoted string, evaluates to a variable name
-    (+ x y [z ...]) ; addition (allows repetition since associative)
-    (- x y) ; subtraction (no repetition)
-    (* x y [z ...]) ; multiplication (allows repetition)
-    (^ x y) ; exponentiation
-    (/ x y) ; division
-    (< x y) ; less-than
-    (> x y) ; greater-than
-    (= x y) ; equality
-    (and clause-1 clause-2 [clause-3 ...]) ; logical AND
-    (or clause-1 clause-2 [clause-3 ...])  ; logical OR
+```lisp
+(3,000,000)     ; integer (commas are legal and ignored)
+(true)  ; boolean
+(false) ; boolean
+('a')   ; character
+("a string") ; short for ('a' ' ' 's' 't' 'r' 'i' 'n' 'g')
+('quoted) ; quoted string, evaluates to a variable name
+(+ x y [z ...]) ; addition (allows repetition since associative)
+(- x y) ; subtraction (no repetition)
+(* x y [z ...]) ; multiplication (allows repetition)
+(^ x y) ; exponentiation
+(/ x y) ; division
+(< x y) ; less-than
+(> x y) ; greater-than
+(= x y) ; equality
+(and clause-1 clause-2 [clause-3 ...]) ; logical AND
+(or clause-1 clause-2 [clause-3 ...])  ; logical OR
+```
     
 Of course, we can't neglect the list, the fundamental data structure:
 
-    ()      ; empty list
-    (3 'a' x) ; list of integer, char, and variable
-    (head list) ; get first element of a list
-    (tail list) ; get all elements but the first of a list
+```lisp
+()      ; empty list
+(3 'a' x) ; list of integer, char, and variable
+(head list) ; get first element of a list
+(tail list) ; get all elements but the first of a list
+```
 
 Now to macros... Hmm. Well, I guess these are really just like functions, except
 they are replaced before evaluation instead of during it. This essentially means
@@ -120,25 +130,31 @@ macros are functions whose arguments are evaluated lazily, instead of eagerly
 like regular functions arguments. At least that's how I see it naively. Let's
 try that and see if it works.
 
-    (defmacro macro-name (macro-args) body)
+```lisp
+(defmacro macro-name (macro-args) body)
+```
 
 The strategy is, at runtime I'll run through and pick up all defmacro blocks,
 and do macro replacement for all statements at the same level or lower in the
 syntax tree, and the defmacro list will just be annihilated. So for example:
 
-    (if (< 3 4)
-      ((defmacro foo (x y) (= x y))
-       (foo (+ 1 2) (- 3 4)))
-      (foo 3 4)
-    )
+```lisp
+(if (< 3 4)
+  ((defmacro foo (x y) (= x y))
+   (foo (+ 1 2) (- 3 4)))
+  (foo 3 4)
+)
+```
     
 This will be macro expanded to:
 
-    (if (< 3 4)
-      ((= (+ 1 2) (- 3 4)))
-      (foo 3 4)
-    )
-    
+```lisp
+(if (< 3 4)
+  ((= (+ 1 2) (- 3 4)))
+  (foo 3 4)
+)
+```
+   
 The foo function in the else branch won't be expanded with the macro since it
 was not in a sibling branch of the syntax tree or below. So in other words,
 macro definitions will be scoped just like function definitions are. In fact,
