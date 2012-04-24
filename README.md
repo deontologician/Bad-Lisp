@@ -144,8 +144,8 @@ was not in a sibling branch of the syntax tree or below. So in other words,
 macro definitions will be scoped just like function definitions are. In fact,
 let's go crazy and just allow anonymous macros as well:
 
-    ```lisp
-    ((lambdamac (x) (x x x)) (+ 3 4))
-    =>
-    (((+ 3 4) (+ 3 4) (+ 3 4)))
-    ```
+```lisp
+((lambdamac (x) (x x x)) (+ 3 4))
+=>
+(((+ 3 4) (+ 3 4) (+ 3 4)))
+```
