@@ -24,7 +24,7 @@ macros ensure that the resulting program is semantically meaningful, but it does
 mean it is syntactically correct. The third large conceptual aspect of lisp in
 my mind is its dynamic nature. That means that not only do we need to implement
 some sort of dynamic typing, but we also need to implement "eval" in the
-lnaguage itself so that we can take advantage of the "code is data and data is
+language itself so that we can take advantage of the "code is data and data is
 code" isomorphism.
 
 So knowing these three high-level concepts behind lisp, can I implement a simple
