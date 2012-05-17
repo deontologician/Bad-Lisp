@@ -102,7 +102,7 @@ operators:
 (false) ; boolean
 ('a')   ; character
 ("a string") ; short for ('a' ' ' 's' 't' 'r' 'i' 'n' 'g')
-('quoted) ; quoted string, evaluates to a variable name
+(`quoted) ; quoted value, evaluates to itself without the backtick
 (+ x y [z ...]) ; addition (allows repetition since associative)
 (- x y) ; subtraction (no repetition)
 (* x y [z ...]) ; multiplication (allows repetition)
@@ -120,8 +120,10 @@ Of course, we can't neglect the list, the fundamental data structure:
 ```lisp
 ()      ; empty list
 (3 'a' x) ; list of integer, char, and variable
-(head list) ; get first element of a list
-(tail list) ; get all elements but the first of a list
+(hd list) ; get first element of a list
+(tl list) ; get all elements but the first of a list
+(ht 3 4 5 6) ; split a list by head and tail => (3 (4 5 6))
+(cons 3 (2 4)) ; joins a head and tail => (3 2 4)
 ```
 
 Now to macros... Hmm. Well, I guess these are really just like functions, except
